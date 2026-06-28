@@ -1,0 +1,6 @@
+BASE_TASK_CONFIG_PATH: eval/config/vlnce_task_futurenav.yaml
+EVAL:
+    IDENTIFICATION: r2r
+    SPLIT: val_unseen
+    EARLY_STOP_ROTATION: 50
+    EARLY_STOP_STEPS: 400

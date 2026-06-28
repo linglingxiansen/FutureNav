@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unified Navigation World Action Model for Vision-Language Navigation.</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- <link rel="icon" href="./static/images/compressed/logo_v2.png" type="image/x-icon"> -->
+  <style>
+    a.external-link:hover {
+      background-color: rgb(109, 109, 109) !important;
+      border-color: rgb(109, 109, 109) !important;
+    }
+    #backToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 50px;
+      z-index: 999;
+      background-color: rgb(0, 180, 139);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 12px 16px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s;
+      display: none;
+    }
+    #backToTopBtn:hover {
+      background-color: rgb(239, 99, 75);
+    }
+    @media (max-width: 768px) {
+      #backToTopBtn {
+        font-size: 18px;
+        padding: 10px 14px;
+      }
+    }
+    .img-hover-effect {
+      transition: transform 0.3s ease-in-out;
+    }
+    .img-hover-effect:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">↑</button>
+  <script>
+    window.onscroll = function () { scrollFunction(); };
+    function scrollFunction() {
+      const button = document.getElementById("backToTopBtn");
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        button.style.display = "block";
+      } else {
+        button.style.display = "none";
+      }
+    }
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+  <!-- Navbar -->
+  <nav class="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation" style="background-color: #f8f8f8; z-index: 998;">
+    <div class="container is-max-desktop">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <strong>Navigation</strong>
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarBasic" class="navbar-menu">
+        <div class="navbar-start">
+          <!-- <a class="navbar-item" href="#main-video"><i class="fa fa-play-circle"></i>&nbsp;Main Video</a> -->
+          <a class="navbar-item" href="#real-world-demo"><i class="fa fa-street-view"></i>&nbsp;Real-World Demos</a>
+          <a class="navbar-item" href="#videos"><i class="fa fa-video"></i>&nbsp;Simulation Demos</a>
+          <a class="navbar-item" href="#abstract"><i class="fa fa-lightbulb"></i>&nbsp;Abstract & Overview</a>
+          <a class="navbar-item" href="#quant-results"><i class="fa fa-calculator"></i>&nbsp;Results</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-2 publication-title" style="letter-spacing: -0.02em; line-height: 1.5; margin: 0 0 10px 0;">
+              <!-- <br>
+              <img src="static/images/compressed/logo_v2.png" 
+                   style="height: 100px; vertical-align: bottom; margin-bottom: 25px;" 
+                   class="img-hover-effect"> -->
+              <br>
+              Unified Navigation World Action Model <br> for Vision-Language Navigation
+            </h1>
+            
+            <div class="is-size-5 publication-authors">
+              
+              <span class="author-block">
+                <a href="https://zhang-lingfeng.github.io/" target="_blank"><strong>Lingfeng Zhang</strong></a><sup>*,1,2</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <span class="author-block">
+                <a href="https://zeying-gong.github.io/" target="_blank"><strong>Zeying Gong</strong></a><sup>*,3</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <span class="author-block">
+                <a href="https://haoxiaoshuai.github.io/homepage/" target="_blank"><strong>Xiaoshuai Hao</strong></a><sup>4,&#9993;</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://www.linkedin.com/in/xiaojun-liang-a555b091/" target="_blank"><strong>Xiaojun Liang</strong></a><sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <span class="author-block">
+                <a href="https://junweiliang.me/" target="_blank"><strong>Junwei Liang</strong></a><sup>3</sup>
+              </span>
+              <span class="author-block">
+                <a href="https://ssr-group.net/" target="_blank"><strong>Wenbo Ding</strong></a><sup>1,&#9993;</sup>
+              </span>
+            </div>
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup> Tsinghua University&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+              <!-- <br> -->
+              <span class="author-block"><sup>2</sup> Pengcheng Laboratory&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <br>
+              <span class="author-block"><sup>3</sup> HKUST(GZ)&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <!-- <br> -->
+              <span class="author-block"><sup>4</sup> Xiaomi EV&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <br>
+              <span class="author-block"><sup>*</sup> Equal Contribution &nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block"><sup>&#9993;</sup> Corresponding Author</span>
+            </div>
+
+            <br>
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="" class="external-link button is-dark" style="background-color: rgb(84,185,209); color: white; border-color: rgb(84,185,209);">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span><b>Paper</b></span>
+                </a>
+              </span>
+              &nbsp;
+              <span class="link-block">
+                <a href="" class="external-link button is-dark" style="background-color: rgb(84,185,209); color: white; border-color: rgb(84,185,209);">
+                  <span class="icon"><i class="fas fa-video"></i></span>
+                  <span><b>Video</b></span>
+                </a>
+              </span>
+              &nbsp;
+              <span class="link-block">
+                <a href="" target="_blank" class="external-link button is-dark" style="background-color: rgb(84,185,209); color: white; border-color: rgb(84,185,209);">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span><b>Code (Coming Soon)</b></span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- <hr> -->
+  <!-- <section class="section" id="main-video" style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">
+        <span class="icon"><i class="fa fa-play-circle"></i></span>&thinsp; Main Video
+      </h2>
+      <p style="margin-bottom: 2em;">
+        The first <b><u>FL</u></b>ow-based <b><u>U</u></b> policy for <b><u>X</u></b>-platform navigation.
+    </p>
+      <div style="margin-bottom: 40px;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px;">
+          <iframe src="https://www.youtube.com/embed/cY6tFvKgTjo"
+                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                  allowfullscreen 
+                  loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>    
+  </section> -->
+  <hr>
+  <section class="section" id="real-world-demo"  style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+  
+          <h2 class="title is-3">
+            <span class="icon"><i class="fa fa-street-view"></i></span>&thinsp; Real-World Demonstrations
+          </h2>
+          <p style="margin-bottom: 2em;">
+            Testing our method in real-world environments.
+          </p>
+  
+          <style>
+            .video-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 1.5rem;
+            }
+            .video-grid-item {
+              position: relative;
+              padding-bottom: 56.25%;
+              height: 0;
+              overflow: hidden;
+              border-radius: 10px;
+            }
+            .video-grid-item iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border: 0;
+            }
+            @media (max-width: 768px) {
+              .video-grid {
+                grid-template-columns: 1fr;
+              }
+            }
+          </style>
+
+          <div class="video-grid">
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/l5PGtVXCAGc" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/lgm6FJDDNYE" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/_CitDYyRMSE" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/_OTfsTPFJNM" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/45BiGFcFOyc" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/PyKLOPkq4U0" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/9Zn2Apo9T2Q" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/yQOBjAGqi8o" allowfullscreen loading="lazy"></iframe></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+  <br/>
+
+  <section class="section" id="videos"  style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+  
+          <!-- Section Title -->
+          <h2 class="title is-3">
+            <span class="icon"><i class="fa fa-video"></i></span>&thinsp; Simulation Demonstrations
+          </h2>
+          <p style="margin-bottom: 2em;">
+            Testing our method in simulation environments, including R2R and RxR.
+          </p>
+  
+          <style>
+            .video-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 1.5rem;
+            }
+            .video-grid-item {
+              position: relative;
+              padding-bottom: 56.25%;
+              height: 0;
+              overflow: hidden;
+              border-radius: 10px;
+            }
+            .video-grid-item iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border: 0;
+            }
+            @media (max-width: 768px) {
+              .video-grid {
+                grid-template-columns: 1fr;
+              }
+            }
+          </style>
+
+          <div class="video-grid">
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/jzpMR5DumS0" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/j3nOwyEGZ2U" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/8xLQprHJ9v8" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/OJqUoWOU-Vc" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/w2JNdNljSFY" allowfullscreen loading="lazy"></iframe></div></div>
+            <div><div class="video-grid-item"><iframe src="https://www.youtube.com/embed/o7YEvCZzPjs" allowfullscreen loading="lazy"></iframe></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+    <section class="section" id="abstract"  style="scroll-margin-top: 4rem;">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width has-text-centered">
+          <h2 class="title is-3">
+            <span class="icon"><i class="fa fa-thumbtack"></i></span>&thinsp; Abstract
+          </h2>
+          <div class="content has-text-justified" style="padding-top: 0px">
+            <p>
+            Vision-and-language navigation (VLN) in continuous environments requires an agent to
+            ground instructions in egocentric observations while maintaining spatial
+            understanding across long action sequences. Recent navigation foundation models
+            have shown strong progress by scaling vision-language models, but they often
+            learn navigation primarily as direct action generation, without explicitly
+            modeling world states or predicting their future evolution. We introduce
+            \emph{Unified Navigation World Action Model} (<strong><em>FutureNav</em></strong>), a VLM-based unified
+            world-action modeling framework. Specifically, <strong><em>FutureNav</em></strong> jointly encodes text,
+            visual, and spatial features and feeds them into the LLM, and optimizes four
+            objectives for simultaneous world and action modeling: an action policy objective
+            for navigation action prediction, inverse and forward dynamics objectives for
+            modeling state transitions, and a future generation objective for predicting
+            future spatial states. This unified architecture strengthens action prediction
+            while explicitly modeling the world, without sacrificing inference speed.
+            Extensive experiments show that, with only a 4B-scale backbone, <strong><em>FutureNav</em></strong>
+            achieves state-of-the-art performance on multiple VLN benchmarks and
+            substantially outperforms prior VLN methods, paving the way toward future
+            world-action models for VLN. We will release the code and models to support
+            future research.            
+          </p>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="margin-top: -100px;"></section>
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class=" column is-full-width has-text-centered">
+        <h2 class="title is-3">
+          <span class="icon"><i class="fa fa-lightbulb"></i></span>&thinsp; Overview
+        </h2>
+        <img src="./static/images/press_teaser_01.png" loading="lazy"/>
+        <div class="content has-text-justified" style="padding-top: 0px">
+          <p>
+            <strong>Overview of FutureNav</strong>. Our model unifies four navigation capabilities
+    in a single VLM-based world-action framework: action policy learning for direct
+    navigation control, inverse dynamics for inferring actions from observation
+    changes, forward dynamics for action-conditioned state transition modeling, and
+    future generation for predicting upcoming spatial states. This unified design
+    improves world understanding and action prediction while achieving
+    state-of-the-art performance on VLN-CE benchmarks.
+          </p>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section class="section" style="margin-top: -50px;"></section>
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class=" column is-full-width has-text-centered">
+        <h2 class="title is-3">
+          <span class="icon"><i class="fa fa-rocket"></i></span>&thinsp; Framework
+        </h2>
+        <img src="./static/images/press_overview_01.png" loading="lazy"/>
+        <div class="content has-text-justified" style="padding-top: 0px">
+          <p>
+            <strong>Architecture of FutureNav</strong>. A VLM backbone encodes the instruction and egocentric observations, while a frozen spatial encoder provides spatial-aware features for world-state understanding. The model is trained to support four world-action capabilities: action policy learning for navigation control, inverse dynamics for inferring actions from observation changes, forward dynamics for predicting action-conditioned state transitions, and future generation for anticipating upcoming spatial states.
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section class="section" id="quant-results"  style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop">
+      
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h3 class="title is-3">
+              <span class="icon"><i class="fas fa-calculator"></i></span>&thinsp; Quantitative Results
+            </h3>
+            <img src="./static/images/press_overview_01.png" loading="lazy"/>
+            <div class="content has-text-justified" style="padding-top: 0px">
+              <p>
+                Main experiment of <strong><em>FutureNav</em></strong>. Comparison with prior VLN-CE methods on the R2R-CE and RxR-CE val-unseen splits. <strong><em>FutureNav</em></strong> uses only a single RGB sensor. StreamVLN* uses EnvDrop as external data. NaVILA* excludes human-following data. <sup>&dagger;</sup> denotes models trained only with VLN-CE expert trajectories and without any additional data. &Delta;(%) rows report relative gains over JanusVLN; NE is computed in the reverse direction since lower is better.
+            </div>
+            </div>
+        </div>
+      </div>
+  </section>
+  <hr>
+  <br/>
+  <section class="section" id="Qualitative Results."  style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+          <h2 class="title is-3">
+            <span class="icon"><i class="fa fa-object-group"></i></span>&thinsp; Qualitative Results
+          </h2>
+          <br/>
+  
+          <!-- sim -->
+          <figure style="margin-bottom: 40px;">
+            <img src="./static/images/press_qualitative_sim_01.png" style="width: 100%; border-radius: 10px;" loading="lazy" />
+            <figcaption style="margin-top: 10px; text-align: justify;">
+              <strong>Simulated qualitative comparison on VLN-CE</strong>. We compare <strong><em>FutureNav</em></strong> with the policy-only baseline under matched instructions and observations. The baseline tends to make locally plausible but less stable decisions, while <strong><em>FutureNav</em></strong> better preserves spatial progress, follows landmark-conditioned turns, and stops near the intended target.
+            </figcaption>
+          </figure>
+          
+          <!-- real -->
+          <figure style="margin-bottom: 40px;">
+            <img src="./static/images/press_qualitative_01.png" style="width: 100%; border-radius: 10px;" loading="lazy" />
+            <figcaption style="margin-top: 10px; text-align: justify;">
+              <strong>Zero-shot real-world qualitative results of <strong><em>FutureNav</em></strong></strong>. Without real-world navigation fine-tuning, the model follows natural language instructions in real indoor and outdoor scenes, grounds navigation decisions to visible landmarks, and stops at the specified destination.
+          </figure>
+        </div>
+      </div>
+    </div>
+  <!-- </section>
+  <hr>
+  <br/>
+  <section class="section" id="citation" style="scroll-margin-top: 4rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+          <h2 class="title is-3">
+            <span class="icon"><i class="fa fa-quote-left"></i></span>&thinsp; Citation
+          </h2>
+          <div class="content has-text-justified">
+            <p>If you find this work useful, please consider citing:</p>
+          </div>
+          <div style="position: relative;">
+            <pre id="bibtex-block" style="background-color: #f5f5f5; border-radius: 8px; padding: 20px; text-align: left; font-size: 0.85rem; overflow-x: auto; white-space: pre;">
+              @article{gong2026flux,
+                title={FLUX: Accelerating Cross-Embodiment Generative Navigation Policies via Rectified Flow and Static-to-Dynamic Learning},
+                author={Gong, Zeying and Zhong, Yangyi and Ding, Yiyi and Hu, Tianshuai and Zhao, Guoyang and Kong, Lingdong and Li, Rong and You, Jiadi and Liang, Junwei},
+                journal={arXiv preprint arXiv:2603.12806},
+                year={2026}
+              }</pre>
+            <button onclick="copyBibtex()" 
+                    style="position: absolute; top: 10px; right: 10px; background-color: rgb(0,180,139); color: white; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.8rem;"
+                    onmouseover="this.style.backgroundColor='rgb(239,99,75)'"
+                    onmouseout="this.style.backgroundColor='rgb(0,180,139)'"
+                    id="copy-btn">
+              <i class="fa fa-copy"></i> Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+  <hr>
+  <br/>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              We thank the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> authors for their
+              excellent templates, which we used as a basis for our site.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    function copyBibtex() {
+      const text = document.getElementById('bibtex-block').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerHTML = '<i class="fa fa-check"></i> Copied!';
+        setTimeout(() => { btn.innerHTML = '<i class="fa fa-copy"></i> Copy'; }, 2000);
+      });
+    }
+  </script>
+</body>
+
+</html>
